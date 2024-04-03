@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap");
+
+@import url("./headroom.css");
+@import url("./swiper.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: "Vazirmatn";
+  font-weight: 600;
+}
+
+.logo {
+  font-family: "Bubblegum Sans";
+}
+
+/* Scrollbar Styles  */
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 4px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.hide-scrollbar {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Shadow  */
+
+.shadow-1600 {
+  box-shadow: 0 6px 60px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn {
+  color: #ffffff;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: rgb(236, 155, 4);
+}
+
+.btn-danger {
+  background-color: rgb(243, 40, 40);
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.mt-0-important {
+  margin-top: 0 !important;
+}
+
+/* RC Slider Styles  */
+
+.rc-slider-handle-1,.rc-slider-handle-2 {
+  background-color: #2563eb !important;
+  opacity: 1 !important;
+  border-radius: 5px !important;
+  border: none !important;
+}

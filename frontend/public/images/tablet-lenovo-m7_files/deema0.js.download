@@ -1,0 +1,6 @@
+!function (t, e, n) {
+
+        c = e.getElementsByTagName("script")[0], s = e.createElement("script");
+    s.async = 1; s.type = "text/javascript";
+    s.src = "https://www.technolife.ir/image/deemaScript.js", c.parentNode.insertBefore(s, c)
+}(window, document);

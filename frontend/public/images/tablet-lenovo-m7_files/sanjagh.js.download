@@ -1,0 +1,5 @@
+!function(){
+         var h=document.getElementsByTagName("head")[0],s=document.createElement("script");
+        s.async=!0,s.defer=!0,s.type="text/javascript",d=new Date,s.src="https://n1.sanjagh.com/serve/66803/retargeting.js?t="+d.getFullYear().toString()+d.getMonth()+d.getDate()+d.getHours(),h.appendChild(s);
+}(window, document);
+

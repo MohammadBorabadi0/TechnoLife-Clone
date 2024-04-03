@@ -1,0 +1,26 @@
+#categories .swiper {
+  position: static !important;
+}
+
+#categories .swiper-button-prev,
+#categories .swiper-button-next {
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 1rem;
+  color: #000 !important;
+  fill: black !important;
+  stroke: black !important;
+  --swiper-navigation-size: 9px;
+  border: 1px solid #ddd !important;
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  position: absolute !important;
+  z-index: 10;
+}
+
+#categories .swiper-button-prev {
+  right: 0px !important;
+}
+
+#categories .swiper-button-next {
+  left: 0px !important;
+}

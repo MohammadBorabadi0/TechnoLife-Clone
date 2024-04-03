@@ -1,0 +1,13 @@
+#billboards .swiper-button-next,
+#billboards .swiper-button-prev {
+  right: 10px;
+  top: 85% !important;
+}
+
+#billboards .swiper-button-prev {
+  right: 20px !important;
+}
+
+#billboards .swiper-button-next {
+  right: 65px !important;
+}

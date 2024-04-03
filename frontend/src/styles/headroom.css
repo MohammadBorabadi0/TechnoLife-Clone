@@ -1,0 +1,70 @@
+/* React Headroom  */
+
+/* .headroom-wrapper {
+  position: fixed;
+  top: 100px;
+  left: 0;
+  right: 0;
+}
+
+.headroom-wrapper ul {
+  padding: 20px;
+}
+
+.headroom--unfixed {
+  position: fixed;
+  top: 76px;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.headroom--unpinned {
+  transition: position 0.5s ease-in-out;
+}
+
+.headroom--unpinned ul {
+  padding: 0 20px 20px 0;
+  border-bottom: 1px solid #ddd;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: -150px;
+}
+
+.headroom--unpinned ul {
+  padding-top: 200px;
+}
+
+.headroom--pinned {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 74px;
+  border-bottom: 1px solid #ddd;
+} */
+
+/* --------------------------------- */
+
+.scrollbar {
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px; 
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.sticky-aside {
+  position: sticky !important;
+  top: 0;
+}
