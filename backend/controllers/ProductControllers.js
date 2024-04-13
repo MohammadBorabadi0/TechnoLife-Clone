@@ -106,6 +106,8 @@ const updateProduct = asyncHandler(async (req, res) => {
       specifications,
     } = req.body;
 
+    console.log({ specifications });
+
     const {
       cpu,
       gpu,
@@ -123,6 +125,7 @@ const updateProduct = asyncHandler(async (req, res) => {
       dimensions,
       weight,
       outputPower,
+      simplePhone,
     } = specifications;
 
     const findCategory = await Category.findOne({ _id: category });
@@ -170,6 +173,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.specifications.sensors = sensors || product.specifications.sensors;
     product.specifications.outputPower =
       outputPower || product.specifications.outputPower;
+    product.specifications.simplePhone =
+      simplePhone || product.specifications.simplePhone;
     product.images = images || product.images;
 
     if (!findCategory.brand.includes(findBrand._id)) {
@@ -178,8 +183,6 @@ const updateProduct = asyncHandler(async (req, res) => {
 
     await findCategory.save();
     await product.save();
-
-    // console.log({ product });
 
     return res.status(201).json({
       success: true,

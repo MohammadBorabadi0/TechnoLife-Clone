@@ -9,6 +9,7 @@ import { BiLogOut } from "react-icons/bi";
 import { BsBoxSeam } from "react-icons/bs";
 import { RiHeartLine } from "react-icons/ri";
 import { TbUserPentagon } from "react-icons/tb";
+import { LiaUserEditSolid } from "react-icons/lia";
 
 const Sidebar = () => {
   const { userProfile, fetchUser, logoutUser } = useUserStore((state) => state);
@@ -26,7 +27,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="flex-1 min-w-[250px] z-10">
+    <div className="hidden lg:block flex-1 min-w-[250px] z-10">
       <Link href="/profile" className="flex items-center gap-2 pr-5">
         <TbUserPentagon size={22} />
         <h4 className="font-semibold xl:text-lg">
@@ -64,6 +65,21 @@ const Sidebar = () => {
               <RiHeartLine className="text-red-500 text-lg" />
             </div>
             <p>کالاهای مورد علاقه</p>
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/profile/account-info"
+            className={`flex items-center gap-2 py-2 px-4 select-none ${
+              pathname === "/profile/account-info"
+                ? "border border-l-0 rounded-r-full bg-white"
+                : null
+            }`}
+          >
+            <div className="flex items-center justify-center h-6 w-6">
+              <LiaUserEditSolid className="text-2xl" />
+            </div>
+            <p>مشخصات فردی</p>
           </Link>
         </li>
         <li>

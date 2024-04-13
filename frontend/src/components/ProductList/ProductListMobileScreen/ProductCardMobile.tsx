@@ -7,8 +7,8 @@ import ProductColorItem from "../ProductColorItem";
 import Link from "next/link";
 import { En_To_Fa } from "@/utils/functions";
 import { FaStar } from "react-icons/fa";
-import { useCategoryStore } from "@/store/store";
-import { BiMemoryCard } from "react-icons/bi";
+import { useCategoryStore, useCompareProductStore } from "@/store/store";
+import { BiMemoryCard, BiPlus, BiTrash } from "react-icons/bi";
 import { MdOutlineScreenshot } from "react-icons/md";
 import { IoCameraOutline } from "react-icons/io5";
 import { CgBattery } from "react-icons/cg";
@@ -21,6 +21,12 @@ const ProductCardMobile: FC<IProps> = ({ product }) => {
   const [category, setCategory] = useState<string | null>(null);
 
   const { categories } = useCategoryStore((state) => state);
+  const {
+    showCompareProducts,
+    addToCompareProducts,
+    removeFromCompareProducts,
+    isExistsInCompareProducts,
+  } = useCompareProductStore((state) => state);
 
   // Find Category Name
   useEffect(() => {
@@ -33,20 +39,22 @@ const ProductCardMobile: FC<IProps> = ({ product }) => {
   }, [categories]);
 
   return (
-    <Link href={`/product/${product._id}`} className="text-sm sm:hidden">
-      {/* Product Discount  */}
-
+    <div className="text-sm sm:hidden relative">
+      {/* Product Discount Timer   */}
       {product.discount && product.discountTime ? (
         <Timer hours={product.discountTime} product={product} />
       ) : null}
 
-      <div className="flex justify-between gap-5">
+      <Link
+        href={`/product/${product._id}`}
+        className="flex justify-between gap-5"
+      >
         <div className="flex flex-col gap-7">
           <h4 className="text-black font-semibold leading-7">{product.name}</h4>
           {/* Product Rating  */}
           <div className="flex items-center justify-end w-full text-sm gap-1">
             <FaStar color="#f59e0b" />
-            <span>{En_To_Fa(`${product.rating}`)}</span>
+            <span>{En_To_Fa(`${product.rating?.toFixed(1)}`)}</span>
           </div>
 
           {/* Product Specifications  */}
@@ -126,9 +134,36 @@ const ProductCardMobile: FC<IProps> = ({ product }) => {
             </div>
           </div>
         </div>
-      </div>
+      </Link>
       <span className="border-y block py-[1px] mt-5"></span>
-    </Link>
+
+      {/* Add To Compare Products Button  */}
+      {showCompareProducts && product._id ? (
+        isExistsInCompareProducts(product._id) ? (
+          <button
+            className="flex items-center gap-2 transition-all duration-100 absolute right-3 bottom-3 bg-blue-600 text-white border border-slate-500 px-4 py-1 rounded-md shadow-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              removeFromCompareProducts(product._id!);
+            }}
+          >
+            <span>حذف</span>
+            <BiTrash size={18} />
+          </button>
+        ) : (
+          <button
+            className="flex items-center gap-2 transition-all duration-100 absolute right-3 bottom-3 bg-white text-black border border-slate-500 px-4 py-1 rounded-md shadow-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              addToCompareProducts(product);
+            }}
+          >
+            <span>اضافه</span>
+            <BiPlus />
+          </button>
+        )
+      ) : null}
+    </div>
   );
 };
 

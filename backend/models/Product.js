@@ -77,6 +77,10 @@ const productSchema = new mongoose.Schema({
     default: 0,
   },
   specifications: {
+    simplePhone: { type: Boolean, default: false },
+    flagship: { type: Boolean, default: false },
+    gaming: { type: Boolean, default: false },
+    fiveG: { type: Boolean, default: false },
     cpu: { type: String },
     gpu: { type: String },
     ram: { type: String },

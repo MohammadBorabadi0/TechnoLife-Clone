@@ -10,7 +10,7 @@ interface IProps {
   categoryName: string;
 }
 
-const MobileContent: FC<IProps> = ({ categoryName }) => {
+const FirstContent: FC<IProps> = ({ categoryName }) => {
   const { brands, fetchBrands } = useBrandStore((state) => state);
   const { categories, fetchCategories } = useCategoryStore((state) => state);
 
@@ -57,4 +57,4 @@ const MobileContent: FC<IProps> = ({ categoryName }) => {
   );
 };
 
-export default MobileContent;
+export default FirstContent;

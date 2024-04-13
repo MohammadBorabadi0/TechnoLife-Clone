@@ -8,6 +8,7 @@ import {
   loginUser,
   logout,
   updateUser,
+  updateUserProfile,
 } from "../controllers/UserController.js";
 import { admin, protect } from "../middlewares/authMiddleware.js";
 
@@ -15,6 +16,8 @@ const router = Router();
 
 router.route("/users").get(protect, getAllUsers);
 router.route("/user/profile").get(protect, getUserProfile);
+router.route("/user/profile/:id").put(protect, updateUserProfile);
+
 router
   .route("/user/:id")
   .get(protect, getUserById)

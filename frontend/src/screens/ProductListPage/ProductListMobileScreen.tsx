@@ -8,13 +8,16 @@ import {
   useBrandStore,
   useCategoryStore,
   useCompareProductStore,
+  useModal,
   useProductStore,
 } from "@/store/store";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { ProductData } from "@/utils/type";
 import { IoClose, IoCloseSharp } from "react-icons/io5";
 import Image from "next/image";
 import Filters from "@/components/ProductList/ProductListMobileScreen/Filters";
+import SortModal from "@/components/ProductList/ProductListMobileScreen/SortModal";
+import { sortData } from "@/data/data";
 
 interface IProps {
   products: ProductData[];
@@ -25,6 +28,8 @@ const ProductListMobileScreen: FC<IProps> = ({ products }) => {
 
   const { brands, fetchBrands } = useBrandStore((state) => state);
   const { categories, fetchCategories } = useCategoryStore((state) => state);
+  const { showSortModal, setShowSortModal, activeSort, setActiveSort } =
+    useModal((state) => state);
   const {
     compareProducts,
     showCompareProducts,
@@ -34,8 +39,15 @@ const ProductListMobileScreen: FC<IProps> = ({ products }) => {
   } = useCompareProductStore((state) => state);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // const category = findCategoryFromURL(decodedUrl, categories);
+  useEffect(() => {
+    const sort = searchParams.get("sort");
+    const findSort = sortData.find((item) => item.query === sort);
+    if (findSort) {
+      setActiveSort(findSort.id, findSort.name);
+    }
+  }, [searchParams]);
 
   return (
     <div className="lg:hidden text-xs px-3 py-5">
@@ -46,8 +58,8 @@ const ProductListMobileScreen: FC<IProps> = ({ products }) => {
           <PageHero />
 
           {/* Filter Section  */}
-          <div className="flex items-center gap-2">
-            <div className="flex gap-5 bg-blue-50 my-4 h-10 px-2 flex-1 rounded-lg">
+          <div className="flex items-center gap-2 sticky top-0 bg-white h-16 z-20">
+            <div className="flex gap-5 h-10 rounded-lg my-5 px-2 bg-blue-50 flex-1">
               <button
                 className="flex items-center gap-1"
                 onClick={() => setShowFilters(true)}
@@ -55,11 +67,14 @@ const ProductListMobileScreen: FC<IProps> = ({ products }) => {
                 <BiFilter size={17} />
                 <span>فیلترها</span>
               </button>
-              <div className="flex items-center gap-2">
+              <button
+                className="flex items-center gap-2"
+                onClick={() => setShowSortModal(true)}
+              >
                 <FiFilter />
                 <span className="hidden xs:block">ترتیب: </span>
-                <span>پرفروش ترین</span>
-              </div>
+                <span>{activeSort.name}</span>
+              </button>
             </div>
 
             {/* ------------------------------------------------------------------- */}
@@ -140,6 +155,7 @@ const ProductListMobileScreen: FC<IProps> = ({ products }) => {
           <ProductList products={products} />
         </div>
       )}
+      {showSortModal && <SortModal />}
     </div>
   );
 };

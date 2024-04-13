@@ -106,7 +106,7 @@ const ProductCard: FC<IProps> = ({ product }) => {
         {/* Product Rating  */}
         <div className="flex items-center justify-end w-full text-sm gap-1">
           <FaStar color="#f59e0b" />
-          <span>{En_To_Fa(`4.5`)}</span>
+          <span>{En_To_Fa(`${product.rating}`)}</span>
         </div>
         {/* Product Price  */}
         <div className="flex flex-col gap-1 w-full text-lg">

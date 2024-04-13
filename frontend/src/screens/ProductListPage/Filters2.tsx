@@ -153,6 +153,8 @@ const ProductFilter: FC<IProps> = ({ setShowFilters }) => {
           {/* Filter By Price  */}
           <FilterByPrice />
 
+          {JSON.stringify(decodedUrl)}
+
           {/* Filter By Brand  */}
           {decodedUrl.includes("تمامی") && (
             <FilterByBrand

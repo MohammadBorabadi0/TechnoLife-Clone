@@ -1,11 +1,12 @@
 import Title from "@/components/Profile/Title";
-import React from "react";
+import FavoriteProductListScreen from "@/screens/Profile/favorites/FavoriteProductListScreen";
 
 const MyFavoritesPage = () => {
   return (
-    <div>
+    <>
       <Title title="کالاهای مورد علاقه" />
-    </div>
+      <FavoriteProductListScreen />
+    </>
   );
 };
 

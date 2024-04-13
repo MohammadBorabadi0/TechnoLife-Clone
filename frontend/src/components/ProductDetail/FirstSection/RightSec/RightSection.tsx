@@ -109,6 +109,7 @@ const RightSection: FC<IProps> = ({
         <ProductIconButtons
           commentsRef={commentsRef}
           scrollToSection={scrollToSection}
+          product={product}
         />
 
         {/* -------------------------------------------------------------------------------- */}

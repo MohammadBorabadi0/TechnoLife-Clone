@@ -28,6 +28,10 @@ export const initialData = {
     connectionType: "",
     sensors: "",
     weight: "",
+    simplePhone: false,
+    flagship: false,
+    gaming: false,
+    fiveG: false,
   },
   images: [],
 };
@@ -47,7 +51,7 @@ import {
 } from "../utils/type";
 import toast from "react-hot-toast";
 import { initialAddressFormValues, sendCompanyData } from "@/data/data";
-import { pid } from "process";
+import { FaSleigh } from "react-icons/fa";
 
 // ----------------------------------------------------------
 
@@ -369,6 +373,7 @@ interface IUserStore {
   fetchUser: () => Promise<void>;
   getUserById: (id: string) => Promise<void>;
   updateUser: (user: IUser) => Promise<void>;
+  updateUserProfile: (user: IUser) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
   registerUser: (user: IUser) => Promise<void>;
   loginUser: (user: IUser) => Promise<void>;
@@ -428,7 +433,7 @@ export const useUserStore = create<IUserStore>((set) => ({
         } else {
           set(() => ({ isAdmin: false }));
         }
-        set({ userProfile: data, isLoggedIn: true });
+        set({ userProfile: data.data, isLoggedIn: true });
       }
     } catch (err) {
       console.log(err);
@@ -500,6 +505,25 @@ export const useUserStore = create<IUserStore>((set) => ({
     if (data.success) {
       toast.success(data.message);
       set((state) => ({ users: [...state.users] }));
+    } else {
+      toast.error(data.message);
+      throw new Error("هنگام ویرایش کاربر مشکلی به وجود آمد");
+    }
+  },
+  updateUserProfile: async (user: IUser) => {
+    const res = await fetch(`${url}/api/auth/user/profile/${user._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(user),
+    });
+    const data = await res.json();
+
+    console.log({ store: data });
+
+    if (data.success) {
+      toast.success(data.message);
+      set((state) => ({ userProfile: data.data }));
     } else {
       toast.error(data.message);
       throw new Error("هنگام ویرایش کاربر مشکلی به وجود آمد");
@@ -661,11 +685,33 @@ export const useColorStore = create<IColorStore>((set) => ({
 interface IModal {
   showAddCommentModal: boolean;
   showShareModal: boolean;
+  showSortModal: boolean;
   showConfirmModal: boolean;
   showAddAddressForm: boolean;
   showAddress: boolean;
+
+  // User Info Modal
+
+  showEditName: boolean;
+  showEditEmail: boolean;
+  showEditMobile: boolean;
+  showEditNationalCode: boolean;
+  showEditPassword: boolean;
+  showEditCardNumber: boolean;
+
+  setShowEditName: (isShow: boolean) => void;
+  setShowEditEmail: (isShow: boolean) => void;
+  setShowEditMobile: (isShow: boolean) => void;
+  setShowEditNationalCode: (isShow: boolean) => void;
+  setShowEditPassword: (isShow: boolean) => void;
+  setShowEditCardNumber: (isShow: boolean) => void;
+
+  // End User Info Modal
+  activeSort: { id: number; name: string };
+  setActiveSort: (id: number, name: string) => void;
   setShowAddCommentModal: (isShow: boolean) => void;
   setShowShareModal: (isShow: boolean) => void;
+  setShowSortModal: (isShow: boolean) => void;
   setShowConfirmModal: (isShow: boolean) => void;
   setShowAddAdressForm: (isShow: boolean) => void;
   setShowAddress: (isShow: boolean) => void;
@@ -674,9 +720,44 @@ interface IModal {
 export const useModal = create<IModal>((set) => ({
   showAddCommentModal: false,
   showShareModal: false,
+  showSortModal: false,
   showConfirmModal: false,
   showAddAddressForm: false,
   showAddress: false,
+
+  // User Info Modal
+
+  showEditName: false,
+  showEditEmail: false,
+  showEditCardNumber: false,
+  showEditMobile: false,
+  showEditNationalCode: false,
+  showEditPassword: false,
+  setShowEditName: (isShow: boolean) => {
+    set(() => ({ showEditName: isShow }));
+  },
+  setShowEditEmail: (isShow: boolean) => {
+    set(() => ({ showEditEmail: isShow }));
+  },
+  setShowEditMobile: (isShow: boolean) => {
+    set(() => ({ showEditMobile: isShow }));
+  },
+  setShowEditCardNumber: (isShow: boolean) => {
+    set(() => ({ showEditCardNumber: isShow }));
+  },
+  setShowEditPassword: (isShow: boolean) => {
+    set(() => ({ showEditPassword: isShow }));
+  },
+  setShowEditNationalCode: (isShow: boolean) => {
+    set(() => ({ showEditNationalCode: isShow }));
+  },
+
+  // End User Info Modal
+
+  activeSort: { id: 0, name: "پرفروش ترین" },
+  setActiveSort: (id: number, name: string) => {
+    set(() => ({ activeSort: { id, name } }));
+  },
   setShowAddCommentModal: (isShow: boolean) => {
     set(() => ({
       showAddCommentModal: isShow,
@@ -684,6 +765,9 @@ export const useModal = create<IModal>((set) => ({
   },
   setShowShareModal: (isShow: boolean) => {
     set(() => ({ showShareModal: isShow }));
+  },
+  setShowSortModal: (isShow: boolean) => {
+    set(() => ({ showSortModal: isShow }));
   },
   setShowConfirmModal: (isShow: boolean) => {
     set(() => ({ showConfirmModal: isShow }));
@@ -1307,5 +1391,61 @@ export const useCompareProductStore = create<CompateProductsState>((set) => ({
       return state;
     });
     return exists;
+  },
+}));
+
+// ----------------------------------------------------------------------------------------------------
+
+interface IFavoriteProductList {
+  favoriteProducts: ProductData[];
+  addProductToFavorites: (product: ProductData) => void;
+  removeProductFromFavorites: (productId: string) => void;
+  isExistsInFavorites: (productId: string) => void;
+}
+
+export const useFavoriteProducts = create<IFavoriteProductList>((set) => ({
+  favoriteProducts: JSON.parse(
+    localStorage.getItem("favoriteProducts") || "[]"
+  ),
+  isExistsInFavorites: (productId: string) => {
+    set((state) => {
+      return {
+        ...state,
+        isProductInFavorites: state.favoriteProducts.some(
+          (product) => product._id === productId
+        ),
+      };
+    });
+  },
+  addProductToFavorites: (product: ProductData) => {
+    set((state) => {
+      const isProductInFavorites = state.favoriteProducts.some(
+        (favProduct) => favProduct._id === product._id
+      );
+      if (isProductInFavorites) {
+        toast.error("Product is already in the favorite products");
+        return state;
+      } else {
+        const updatedFavorites = [...state.favoriteProducts, product];
+        localStorage.setItem(
+          "favoriteProducts",
+          JSON.stringify(updatedFavorites)
+        );
+        toast.success("این کالا به علاقه مندی های شما اضافه شد.");
+        return { favoriteProducts: updatedFavorites };
+      }
+    });
+  },
+  removeProductFromFavorites: (productId: string) => {
+    set((state) => {
+      const updatedFavorites = state.favoriteProducts.filter(
+        (product) => product._id !== productId
+      );
+      localStorage.setItem(
+        "favoriteProducts",
+        JSON.stringify(updatedFavorites)
+      );
+      return { favoriteProducts: updatedFavorites };
+    });
   },
 }));

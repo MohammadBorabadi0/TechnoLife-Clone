@@ -639,3 +639,11 @@ export const paymentMethodsData = [
     image: "/images/azkivam.webp",
   },
 ];
+
+export const sortData = [
+  { id: 0, name: "پرفروش ترین", query: "order-desc" },
+  { id: 1, name: "بیشترین قیمت", query: "desc" },
+  { id: 2, name: "کمترین قیمت", query: "asc" },
+  { id: 3, name: "جدیدترین", query: "date-desc" },
+  { id: 4, name: "بیشترین تخفیف", query: "discount-desc" },
+];

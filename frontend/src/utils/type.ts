@@ -131,6 +131,10 @@ export interface ISpecificatons {
   dimensions: string;
   weight: string;
   outputPower: string;
+  simplePhone: boolean;
+  flagship: boolean;
+  gaming: boolean;
+  fiveG: boolean;
 }
 
 export interface ICart {

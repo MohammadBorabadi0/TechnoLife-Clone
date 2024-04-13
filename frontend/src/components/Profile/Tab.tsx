@@ -46,7 +46,7 @@ const Tab: FC<TabProps> = ({ orders, handleFilterOrders }) => {
   return (
     orders && (
       <div className="flex justify-center items-center text-sm">
-        <div className="flex w-fit border rounded-r-lg rounded-l-lg overflow-hidden">
+        <div className="flex w-fit border rounded-r-lg rounded-l-lg overflow-x-auto no-scrollbar lg:overflow-hidden">
           {tabItems.map((item, index) => (
             <Item
               key={index}
@@ -64,7 +64,7 @@ const Tab: FC<TabProps> = ({ orders, handleFilterOrders }) => {
 };
 
 const Item = tw.div<ItemProps>`
-  flex flex-col items-center gap-2 px-10 py-1 border-l last:border-l-0 cursor-pointer select-none transition-all duration-200
+  flex flex-col items-center lg:gap-2 px-5 lg:px-10 py-1 border-l last:border-l-0 cursor-pointer whitespace-nowrap select-none transition-all duration-200
   ${(props) => props.active && "bg-slate-600 text-white"}
 `;
 

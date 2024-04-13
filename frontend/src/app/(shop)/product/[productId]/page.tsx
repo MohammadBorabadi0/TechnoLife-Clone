@@ -11,8 +11,6 @@ import Image from "next/image";
 import { En_To_Fa } from "@/utils/functions";
 import AddCommentForm from "@/components/ProductDetail/Modals/AddCommentForm";
 import {
-  useBrandStore,
-  useCategoryStore,
   useModal,
   useProductStore,
   useStore,
@@ -27,8 +25,6 @@ const ProductDetailPage = () => {
   const { product, fetchProduct, products, fetchProducts } = useProductStore(
     (state) => state
   );
-  const { categories, fetchCategories } = useCategoryStore((state) => state);
-  const { brands, fetchBrands } = useBrandStore((state) => state);
   const { setActiveIndex, setActiveTab } = useStore();
 
   // Refs
@@ -46,8 +42,6 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     fetchProducts();
-    fetchCategories();
-    fetchBrands();
   }, []);
 
   // handle Active Tab

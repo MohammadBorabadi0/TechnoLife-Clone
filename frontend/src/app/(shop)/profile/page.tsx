@@ -6,9 +6,12 @@ import { RiUserLine } from "react-icons/ri";
 import { En_To_Fa } from "@/utils/functions";
 import Link from "next/link";
 import LatestOrders from "@/components/Profile/LatestOrders";
+import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
   const { userProfile, fetchUser } = useUserStore((state) => state);
+
+  const router = useRouter();
 
   useEffect(() => {
     fetchUser();
@@ -61,7 +64,7 @@ const ProfilePage = () => {
                 ?.join("-") || ""}
             </p>
           </div>
-          <button className="bg-slate-700 text-white text-sm px-4 py-2 rounded absolute left-10 -bottom-5">
+          <button className="bg-slate-700 text-white text-sm px-4 py-2 rounded absolute left-10 -bottom-5" onClick={()=>router.push('/profile/account-info')}>
             ویرایش اطلاعات
           </button>
         </div>

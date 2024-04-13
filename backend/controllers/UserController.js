@@ -21,13 +21,13 @@ const createUser = async (req, res) => {
         .json({ success: false, message: "این ایمیل از قبل وجود دارد" });
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    // const hashedPassword = bcrypt.hashSync(password, 10);
 
     const newUser = await User.create({
       firstName,
       lastName,
       email,
-      password: hashedPassword,
+      password,
     });
 
     generateToken(res, newUser._id);
@@ -65,7 +65,7 @@ const loginUser = async (req, res) => {
         .json({ success: false, message: "شما هنوز ثبت نام نکرده اید" });
     }
 
-    const comparePassword = bcrypt.compare(password, user.password);
+    const comparePassword = bcrypt.compareSync(password, user.password);
 
     if (!comparePassword) {
       return res
@@ -75,14 +75,12 @@ const loginUser = async (req, res) => {
 
     generateToken(res, user._id);
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "ورود با موفقیت انجام شد",
-        data: user,
-        token: req.cookies.jwt,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "ورود با موفقیت انجام شد",
+      data: user,
+      token: req.cookies.jwt,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, message: "server error" });
@@ -104,13 +102,15 @@ const getUserProfile = async (req, res) => {
   try {
     const { id } = req.user;
 
-    const user = await User.findOne({ _id: id }).select("-password");
+    const user = await User.findOne({ _id: id });
 
     if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "کاربری با این مشخصات پیدا نشد" });
     }
+
+    console.log({ userPROFILE: user });
 
     return res.json({ success: true, data: user });
   } catch (err) {
@@ -225,6 +225,101 @@ const updateUser = async (req, res) => {
   }
 };
 
+// const updateUserProfile = async (req, res) => {
+//   try {
+//     const {
+//       firstName,
+//       lastName,
+//       email,
+//       mobile,
+//       newPassword,
+//       nationalCode,
+//       cardNumber,
+//     } = req.body;
+//     const { id } = req.params;
+//     const user = await User.findOne({ _id: id });
+
+//     console.log({ newPassword });
+
+//     if (!user) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "کاربری با این مشخصات پیدا نشد" });
+//     }
+
+//     user.firstName = firstName || user.firstName;
+//     user.lastName = lastName || user.lastName;
+//     user.email = email || user.email;
+//     user.mobile = mobile || user.mobile;
+//     user.nationalCode = nationalCode || user.nationalCode;
+//     user.cardNumber = cardNumber || user.cardNumber;
+//     user.password = newPassword || user.password;
+
+//     await user.save();
+
+//     return res.status(200).json({ success: true, data: user });
+//   } catch (error) {
+//     console.log(error);
+//     return res
+//       .status(500)
+//       .json({ success: false, message: "مشکلی در ارتباط با سرور به وجود آمد" });
+//   }
+// };
+
+const updateUserProfile = async (req, res) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      mobile,
+      email,
+      newPassword,
+      cardNumber,
+      nationalCode,
+    } = req.body;
+
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      user.email = email || user.email;
+      user.firstName = firstName || user.firstName;
+      user.lastName = lastName || user.lastName;
+      user.mobile = mobile || user.mobile;
+      user.cardNumber = cardNumber || user.cardNumber;
+      user.nationalCode = nationalCode || user.nationalCode;
+
+      if (newPassword) {
+        user.password = newPassword;
+      }
+
+      const updatedUser = await user.save();
+
+      res.status(200).json({
+        success: true,
+        message: "اطلاعات کاربر با موفقیت بروزرسانی گردید.",
+        data: {
+          firstName: updatedUser.firstName,
+          lastName: updatedUser.lastName,
+          email: updatedUser.email,
+          mobile: updatedUser.mobile,
+          nationalCode: updatedUser.nationalCode,
+          cardNumber: updatedUser.cardNumber,
+        },
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "کاربری با این مشخصات پیدا نشد",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "مشکلی در ارتباط با سرور به وجود آمد" });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -270,6 +365,7 @@ export {
   getUserProfile,
   getUserById,
   updateUser,
+  updateUserProfile,
   deleteUser,
   logout,
 };

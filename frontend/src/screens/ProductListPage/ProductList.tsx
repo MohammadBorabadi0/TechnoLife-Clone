@@ -30,16 +30,6 @@ const ProductList: FC<IProps> = ({ showFilters, products }) => {
           <ProductCardMobile product={product} />
         </Fragment>
       ))}
-      {/* <ProductCard key={product._id} product={product} /> */}
-
-      {/* // <Fragment key={product._id}>
-        //   <div className="block sm:hidden">
-        //     <ProductCardMobile product={product} />
-        //   </div>
-        //   <div className="hidden sm:block">
-        //     <ProductCard product={product} />
-        //   </div>
-        // </Fragment> */}
     </div>
   );
 };
